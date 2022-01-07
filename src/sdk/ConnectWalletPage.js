@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { Redirect } from 'react-router-dom';
+import {Redirect} from "react-router-dom";
 import backspace from "./img/backspace.png";
 //import crypto from 'crypto'
 //import {genSeed, genKeys} from "../sdk";
@@ -25,7 +25,7 @@ const {TonClient} = require("@tonclient/core");
 TonClient.useBinaryLibrary(libWeb);
 
 const client = new TonClient({network: {endpoints: ["net.ton.dev"]}});
-//const client = new TonClient({network: {endpoints: ["main.ton.dev"]}});
+// const client = new TonClient({network: {endpoints: ["main.ton.dev"]}});
 
 //const bip39 = require('bip39');
 const pidCrypt = require("pidcrypt");
@@ -719,11 +719,11 @@ function ConnectWalletPage() {
 				<div className="title">Welcome to DefiSpace!</div>
 				<div className="content content-first">
 					<button className="connect-btn zeropage-btn" onClick={NextPageLogin}>
-						Log In
+						Connect Dex Wallet
 					</button>
-					<button className="connect-btn zeropage-btn" onClick={NextPage}>
+					{/* <button className="connect-btn zeropage-btn" onClick={NextPage}>
 						Sign Up
-					</button>
+					</button> */}
 
 					<button className="connect-btn zeropage-btn" onClick={connectWallet}>
 						Connect TON Crystal Wallet
@@ -1087,7 +1087,7 @@ function ConnectWalletPage() {
 						</button>
 					</a>
 				</div>
-				{connectEver?<Redirect to="/welcome-did-ever"/>:null}
+				{connectEver ? <Redirect to="/welcome-did-ever" /> : null}
 			</div>
 		</div>
 	);

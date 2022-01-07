@@ -34,15 +34,15 @@ button:hover {
 	min-height: 100%;
 	width: 100%;
 	background: linear-gradient(to top, #3569f0, #6f27e4);
-	padding-bottom: 50px;
+	// padding-bottom: 50px;
 }
 .hide {
 	display: none;
 }
-a {
-	text-decoration: none !important;
-	color: #fff !important;
-}
+// a {
+// 	text-decoration: none !important;
+// 	color: #fff !important;
+// }
 a:hover {
 	color: inherit !important;
 }
@@ -201,6 +201,12 @@ a:hover {
 .modal-connect-first {
 	height: 350px !important;
 }
+.modal-connect-first > a > button {
+	padding: 10px 20px;
+	border: 1px solid #000;
+	border-radius: 4px;
+	margin-top: 100px;
+}
 .zeropage-btn {
 	display: block;
 	margin-bottom: 20px;
@@ -239,6 +245,7 @@ a:hover {
 	font-size: 20px;
 	font-weight: 600;
 	margin-bottom: 10px;
+	color: #000;
 }
 .page > .message {
 	color: #000;
@@ -398,7 +405,7 @@ a:hover {
 	border: 2px solid #3569f0;
 }
 
-.message {
+.page > .message {
 	color: #fff;
 	font-size: 24px;
 	position: absolute;
@@ -467,20 +474,20 @@ a:hover {
 	background: transparent;
 	margin: 5px;
 }
-.modal-did-document>.menu-document {
+.modal-did-document > .menu-document {
 	display: flex;
 	margin: 20px 0px;
 }
-.modal-did-document>.menu-document>span{
+.modal-did-document > .menu-document > span {
 	cursor: pointer;
 	margin-bottom: 5px;
 	margin-right: 5px;
 }
-.modal-did-document>.menu-document>.active {
+.modal-did-document > .menu-document > .active {
 	border-bottom: 1px solid #000;
 	font-weight: 600;
 }
-.modal-did-document>.content-document>.menu-item>div {
+.modal-did-document > .content-document > .menu-item > div {
 	padding-bottom: 5px;
 	margin-bottom: 5px;
 	border-bottom: 1px solid #000;
@@ -490,16 +497,26 @@ a:hover {
 // 	margin-bottom: 5px;
 // 	border-bottom: 1px solid #000;
 // }
-.modal-did-document>.content-document>.new-did>.curent-attr>div {
+.modal-did-document > .content-document > .new-did > .curent-attr > div {
 	margin-bottom: 3px;
 }
-.modal-did-document>.content-document>.new-did>.curent-attr>div>span {
+.modal-did-document > .content-document > .new-did > .curent-attr > div > span {
 	margin-right: 5px;
 }
-.modal-did-document>.content-document>.new-did>.curent-attr>div>input {
+.modal-did-document
+	> .content-document
+	> .new-did
+	> .curent-attr
+	> div
+	> input {
 	margin-right: 5px;
 }
-.modal-did-document>.content-document>.new-did>.curent-attr>div>button {
+.modal-did-document
+	> .content-document
+	> .new-did
+	> .curent-attr
+	> div
+	> button {
 	border: 1px solid #000;
 	border-radius: 4px;
 }
@@ -508,10 +525,10 @@ a:hover {
 // 	margin-bottom: 5px;
 // 	border-bottom: 1px solid #000;
 // }
-.modal-did-document>.content-document>.new-did>.new-attr>select {
+.modal-did-document > .content-document > .new-did > .new-attr > select {
 	margin-right: 5px;
 }
-.modal-did-document>.content-document>.new-did>.new-attr>button {
+.modal-did-document > .content-document > .new-did > .new-attr > button {
 	border: 1px solid #000;
 	border-radius: 4px;
 }

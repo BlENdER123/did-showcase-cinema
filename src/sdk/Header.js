@@ -42,7 +42,7 @@ function Header() {
 								path="/login"
 								component={WelcomeDidPageHeader}
 							></Route>
-							<Route exact path="/app" component={AppPageHeader}></Route>
+							{/* <Route exact path="/app" component={AppPageHeader}></Route> */}
 						</Switch>
 					</header>
 				</div>
