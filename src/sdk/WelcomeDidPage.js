@@ -804,34 +804,6 @@ function WelcomeDidPage() {
 		let tempDid = DID.split(":")[2];
 		console.log(DID);
 
-		// let data = '{"user":{"did": "did:everscale:f28b5fb95c2bfdc70b939de1ce2d79e1b8d233223596490827a91bc600fd876d"}}';
-
-		// var xhr = new XMLHttpRequest();
-		// xhr.open("POST", "http://ssi.defispace.com/auth", true);
-		// xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-
-		// xhr.send(data);
-
-		// xhr.onreadystatechange = function()
-		// {
-		// if (xhr.readyState == 4)
-		// {
-		// 	if(xhr.status == 200)
-		// 	{
-		// 		console.log(xhr.responseText);
-		// 	}
-		// }
-		// }
-
-		// const request = fetch("https://ssi.defispace.com/auth", {
-		// 		method: "POST",
-		// 		// headers: {"Content-Type": "application/json; charset=utf-8"},
-		// 		body: {
-		// 			body:
-		// 				JSON.parse('{"user":{"did": "did:everscale:f28b5fb95c2bfdc70b939de1ce2d79e1b8d233223596490827a91bc600fd876d"}}'),
-		// 		},
-		// }).then((response) => console.log(response));
-
 		function sendSign(data) {
 			fetch("https://ssi.defispace.com/auth/login", {
 				method: "post",

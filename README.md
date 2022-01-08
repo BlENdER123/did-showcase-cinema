@@ -25,169 +25,409 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 connectToPair
 Globally allows dex client to connect to pair including sharding optimization of deployed wallets
 
-## API methods
+## Authentication Requests
 
-### getCurrentExtension()
+### DEX Client Requests
 
-Returns object with unified current extension main methods
+### First Request
 
-```
-async function broxus() {
-
-    await ton.ensureInitialized();
-    const {accountInteraction} = await ton.requestPermissions({
-        permissions: ['tonClient', 'accountInteraction']
-    });
-    if (accountInteraction == null) {
-        return new Error('Insufficient permissions');
-    }
-    let curExtenson = {};
-    let providerState = await ton.getProviderState();
-    let netType = providerState.selectedConnection;
-    curExtenson.network = nets[netType]
-    curExtenson.name = "broxus";
-    curExtenson.address = accountInteraction.address._address;
-    curExtenson.pubkey = accountInteraction.publicKey;
-    curExtenson.contract = (contractAbi, contractAddress) => {
-        return new Contract(contractAbi, new AddressLiteral(contractAddress))
-    };
-    curExtenson.runMethod = async (methodName, params, contract) => {
-        return await contract.methods[methodName](params).call({cachedState: undefined})
-    };
-    curExtenson.callMethod = async (methodName, params, contract) => {
-        return await contract.methods[methodName](params).sendExternal({publicKey: accountInteraction.publicKey})
-    };
-    curExtenson.SendTransfer = async (to,amount) => {
-        return await ton.sendMessage({
-            sender: curExtenson.address,
-            recipient: new Address(to),
-            amount: amount,
-            bounce: false
-        })
-    }
-    return curExtenson
-}
-```
+DID is transferred to the request body, at the output we get the signature
 
 ```
-async function extraton() {
-    const provider = getProvider();
-    const signer = await provider.getSigner();
-    const network = await provider.getNetwork();
-    let wallet = signer.getWallet()
+fetch("https://ssi.defispace.com/auth", {
+			method: "post",
+			headers: {
+				"Content-Type": "application/json; charset=utf-8",
+				Connection: "keep-alive",
+			},
 
-    let curExtenson = {};
-    curExtenson.network = network.server;
-    curExtenson.name = "extraton";
-    curExtenson.address = signer.wallet.address;
-    curExtenson.pubkey = await signer.getPublicKey();
-    curExtenson.contract = (contractAbi, contractAddress) => {
-        return new freeton.Contract(signer, contractAbi, contractAddress)
-    };
-    curExtenson.runMethod = async (methodName, params, contract) => {
-        return await contract.methods[methodName].run(params)
-    };
-    curExtenson.callMethod = async (methodName, params, contract) => {
-        return await contract.methods[methodName].call(params)
-    };
-    curExtenson.SendTransfer = async (to,amount) => {
-        return await wallet.transfer(to, amount, false,"")
-    }
-    return curExtenson
-}
+			body: `{"user":{"did": "${tempDid}"}}`,
+		})
+			.then((response) => {
+				return response.json();
+			})
+			.then(async function (data) {
+				// data is the parsed version of the JSON returned from the above endpoint.
+				let msg = data.value;
+				//const msgHash = crypto.createHash('sha256').update(msg).digest('hex');
+				const msgHash = sha256(msg).toString();
+				console.log(msgHash);
+
+				let privatemsg = (await getClientKeys(seed)).secret;
+
+				console.log(privatemsg);
+
+				return await ed.sign(msgHash, privatemsg);
+			})
+			.then((data) => {
+				sendSign(data);
+			});
 ```
 
-### setCreator()
+### Second Request
 
-Function to deploy dex client - it is performed in several stages:
-
-- first step - check client exists on dex root as creator(need to send few tons as pay for register your pubkey on dex root)
-  - if false will offer you to send transfer
-- second step - get shard arg
-- last one - createDEXclient methos that you should sign in extension.
-
-Dex client will be deployes in few seconds.
-
-### connectToPair()
-
-Function to connect to dex pair - it is performed in several stages:
-
-- first step - connectPair, pair sets it`s data to dex client
-- second step - get shard arg for all wallets that need to deploy - depends on pair token roots
-- last step - deploy wallets that client does not have
-
-### swapA()/swapB()
-
-Allows user to use processSwapA/processSwapB call method on dex client smart contract
+A signature and a did are passed to the request body, and at the output we get a special token
 
 ```
-export async function swapA(curExt,pairAddr, qtyA) {
-    const {pubkey, contract, callMethod,SendTransfer} = curExt._extLib
-    let getClientAddressFromRoot = await checkPubKey(pubkey)
-    if(getClientAddressFromRoot.status === false){
-        return getClientAddressFromRoot
-    }
-    let checkClientBalance = await getClientBalance(getClientAddressFromRoot.dexclient)
-    if(500000000 > (checkClientBalance*1000000000)){
-        await transfer(SendTransfer,getClientAddressFromRoot.dexclient,3000000000)
-    }
-    try {
-        const clientContract = await contract(DEXclientContract.abi, getClientAddressFromRoot.dexclient);
-        const processSwapA = await callMethod("processSwapA", {pairAddr:pairAddr, qtyA:qtyA}, clientContract)
-        return processSwapA
-    } catch (e) {
-        return e
-    }
-}
+function sendSign(data) {
+			fetch("https://ssi.defispace.com/auth/login", {
+				method: "post",
+				headers: {
+					"Content-Type": "application/json; charset=utf-8",
+					Connection: "keep-alive",
+				},
+
+				body: `{
+					"user":
+					{
+						"signatureHex":"${data}",
+						"did": "${tempDid}"
+				}
+				}`,
+			})
+				.then((data) => {
+					return data.json();
+				})
+				.then((data) => {
+					testSign(data.token);
+				});
+		}
 ```
 
-### processLiquidity()
+### Third Request
 
-Push liquidity to pair, it turns out LP tokens for some amount of qtyA & qtyB tokens
-
-```
-
-export async function processLiquidity(curExt,pairAddr, qtyA, qtyB) {
-    const {pubkey, contract, SendTransfer, callMethod} = curExt._extLib
-    let getClientAddressFromRoot = await checkPubKey(pubkey)
-    if(getClientAddressFromRoot.status === false){
-        return getClientAddressFromRoot
-    }
-    let checkClientBalance = await getClientBalance(getClientAddressFromRoot.dexclient)
-    if(500000000 > (checkClientBalance*1000000000)){
-        await transfer(SendTransfer,getClientAddressFromRoot.dexclient,3000000000)
-    }
-    try {
-        const clientContract = await contract(DEXclientContract.abi, getClientAddressFromRoot.dexclient);
-        const processLiquidity = await callMethod("processLiquidity", {pairAddr:pairAddr, qtyA:Number(qtyA).toFixed(0), qtyB:Number(qtyB).toFixed(0)}, clientContract)
-        return processLiquidity
-    } catch (e) {
-        return e
-    }
-}
-```
-
-### returnLiquidity()
-
-Return liquidity from pair, it turns out tokens of pair for LP tokens or pair
+Add a special token to the request header, if the entry is successful, then the request will return the same token, if the entry is unsuccessful, then the request will return an error
 
 ```
-export async function returnLiquidity(curExt,pairAddr, tokens) {
-    const {pubkey, contract, SendTransfer, callMethod} = curExt._extLib
-    let getClientAddressFromRoot = await checkPubKey(pubkey)
-    if(getClientAddressFromRoot.status === false){
-        return getClientAddressFromRoot
-    }
-    let checkClientBalance = await getClientBalance(getClientAddressFromRoot.dexclient)
-    if(500000000 > (checkClientBalance*1000000000)){
-        await transfer(SendTransfer,getClientAddressFromRoot.dexclient,3000000000)
-    }
-    try {
-        const clientContract = await contract(DEXclientContract.abi, getClientAddressFromRoot.dexclient);
-        const returnLiquidity = await callMethod("returnLiquidity", {pairAddr:pairAddr, tokens: tokens}, clientContract)
-        return returnLiquidity
-    } catch (e) {
-        return e
-    }
-}
+function testSign(data) {
+			fetch("https://ssi.defispace.com/auth/user", {
+				method: "get",
+				headers: {
+					"Content-Type": "application/json; charset=utf-8",
+					Connection: "keep-alive",
+					Authorization: `Token ${data}`,
+				},
+			})
+				.then((data) => {
+					return data.json();
+				})
+				.then((data) => {
+					if (data.token == undefined) {
+						alert("Login Error!");
+					} else {
+						console.log(data.token);
+						setRedirect(true);
+					}
+				});
+		}
+```
+
+### Full function with requests
+
+```
+function testreq() {
+		let tempDid = DID.split(":")[2];
+		console.log(DID);
+
+		function sendSign(data) {
+			fetch("https://ssi.defispace.com/auth/login", {
+				method: "post",
+				headers: {
+					"Content-Type": "application/json; charset=utf-8",
+					Connection: "keep-alive",
+				},
+
+				body: `{
+					"user":
+					{
+						"signatureHex":"${data}",
+						"did": "${tempDid}"
+				}
+				}`,
+			})
+				.then((data) => {
+					return data.json();
+				})
+				.then((data) => {
+					testSign(data.token);
+				});
+		}
+
+		function testSign(data) {
+			fetch("https://ssi.defispace.com/auth/user", {
+				method: "get",
+				headers: {
+					"Content-Type": "application/json; charset=utf-8",
+					Connection: "keep-alive",
+					Authorization: `Token ${data}`,
+				},
+			})
+				.then((data) => {
+					return data.json();
+				})
+				.then((data) => {
+					if (data.token == undefined) {
+						alert("Login Error!");
+					} else {
+						console.log(data.token);
+						setRedirect(true);
+					}
+				});
+		}
+
+		fetch("https://ssi.defispace.com/auth", {
+			method: "post",
+			headers: {
+				"Content-Type": "application/json; charset=utf-8",
+				Connection: "keep-alive",
+			},
+
+			body: `{"user":{"did": "${tempDid}"}}`,
+		})
+			.then((response) => {
+				return response.json();
+			})
+			.then(async function (data) {
+				// data is the parsed version of the JSON returned from the above endpoint.
+				let msg = data.value;
+				//const msgHash = crypto.createHash('sha256').update(msg).digest('hex');
+				const msgHash = sha256(msg).toString();
+				console.log(msgHash);
+
+				let privatemsg = (await getClientKeys(seed)).secret;
+
+				console.log(privatemsg);
+
+				return await ed.sign(msgHash, privatemsg);
+			})
+			.then((data) => {
+				sendSign(data);
+			});
+	}
+```
+
+### Ever Wallet Requests
+
+The same requests for the ever wallet
+
+### First Request
+
+```
+fetch("https://ssi.defispace.com/auth", {
+			method: "post",
+			headers: {
+				"Content-Type": "application/json; charset=utf-8",
+				Connection: "keep-alive",
+			},
+
+			body: `{"user":{"did": "${tempDid}"}}`,
+		})
+			.then((response) => {
+				return response.json();
+			})
+			.then(async function (data) {
+				// data is the parsed version of the JSON returned from the above endpoint.
+				let msg = data.value;
+				console.log(msg);
+				//const msgHash = crypto.createHash('sha256').update(msg).digest('hex');
+				//const msgHash = sha256(msg).toString(16);
+
+				const msgHash = window.btoa(msg);
+				console.log(msgHash);
+
+				//let privatemsg = (await getClientKeys(seed)).secret;
+
+				let signData = await ton.rawApi.signData({
+					data: msgHash,
+					publicKey: accountInteraction.publicKey,
+				});
+
+				console.log(signData);
+
+				return signData.signatureHex;
+			})
+			.then((data) => {
+				sendSign(data);
+				console.log(data);
+			});
+```
+
+### Second Request
+
+```
+function sendSign(data) {
+			fetch("https://ssi.defispace.com/auth/login", {
+				method: "post",
+				headers: {
+					"Content-Type": "application/json; charset=utf-8",
+					Connection: "keep-alive",
+				},
+
+				body: `{
+					"user":
+					{
+						"signatureHex":"${data}",
+						"did": "${tempDid}"
+				}
+				}`,
+			})
+				.then((data) => {
+					return data.json();
+				})
+				.then((data) => {
+					testSign(data.token);
+				});
+		}
+```
+
+### Third Request
+
+```
+function testSign(data) {
+			fetch("https://ssi.defispace.com/auth/user", {
+				method: "get",
+				headers: {
+					"Content-Type": "application/json; charset=utf-8",
+					Connection: "keep-alive",
+					Authorization: `Token ${data}`,
+				},
+			})
+				.then((data) => {
+					return data.json();
+				})
+				.then(
+					(data) => {
+						console.log(data);
+						if (data.token == undefined) {
+							alert("Error Log In");
+							return;
+						} else {
+							console.log(data.token);
+							setRedirect(true);
+						}
+					},
+					(error) => {
+						console.log(error);
+					},
+				);
+		}
+```
+
+### Full function with requests
+
+```
+async function testreq() {
+		let tempDid = DID.split(":")[2];
+		console.log(DID);
+
+		console.log("initInpageProvider...");
+
+		const provider = await import("ton-inpage-provider");
+		if (!(await provider.hasTonProvider())) {
+			throw new Error("Extension is not installed");
+		}
+
+		await ton.ensureInitialized();
+
+		const {accountInteraction} = await ton.rawApi.requestPermissions({
+			permissions: ["tonClient", "accountInteraction"],
+		});
+
+		console.log(accountInteraction);
+
+		if (accountInteraction == null) {
+			throw new Error("Insufficient permissions");
+		}
+
+		function sendSign(data) {
+			fetch("https://ssi.defispace.com/auth/login", {
+				method: "post",
+				headers: {
+					"Content-Type": "application/json; charset=utf-8",
+					Connection: "keep-alive",
+				},
+
+				body: `{
+					"user":
+					{
+						"signatureHex":"${data}",
+						"did": "${tempDid}"
+				}
+				}`,
+			})
+				.then((data) => {
+					return data.json();
+				})
+				.then((data) => {
+					testSign(data.token);
+				});
+		}
+
+		function testSign(data) {
+			fetch("https://ssi.defispace.com/auth/user", {
+				method: "get",
+				headers: {
+					"Content-Type": "application/json; charset=utf-8",
+					Connection: "keep-alive",
+					Authorization: `Token ${data}`,
+				},
+			})
+				.then((data) => {
+					return data.json();
+				})
+				.then(
+					(data) => {
+						console.log(data);
+						if (data.token == undefined) {
+							alert("Error Log In");
+							return;
+						} else {
+							console.log(data.token);
+							setRedirect(true);
+						}
+					},
+					(error) => {
+						console.log(error);
+					},
+				);
+		}
+
+		fetch("https://ssi.defispace.com/auth", {
+			method: "post",
+			headers: {
+				"Content-Type": "application/json; charset=utf-8",
+				Connection: "keep-alive",
+			},
+
+			body: `{"user":{"did": "${tempDid}"}}`,
+		})
+			.then((response) => {
+				return response.json();
+			})
+			.then(async function (data) {
+				// data is the parsed version of the JSON returned from the above endpoint.
+				let msg = data.value;
+				console.log(msg);
+				//const msgHash = crypto.createHash('sha256').update(msg).digest('hex');
+				//const msgHash = sha256(msg).toString(16);
+
+				const msgHash = window.btoa(msg);
+				console.log(msgHash);
+
+				//let privatemsg = (await getClientKeys(seed)).secret;
+
+				let signData = await ton.rawApi.signData({
+					data: msgHash,
+					publicKey: accountInteraction.publicKey,
+				});
+
+				console.log(signData);
+
+				return signData.signatureHex;
+			})
+			.then((data) => {
+				sendSign(data);
+				console.log(data);
+			});
+	}
 ```
