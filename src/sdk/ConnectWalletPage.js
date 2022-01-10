@@ -716,7 +716,9 @@ function ConnectWalletPage() {
 					<span></span>
 					<span></span>
 				</button> */}
-				<div className="title">Welcome to DefiSpace!</div>
+				<div className="title">
+					To continue, connect the wallet using one of the presented methods
+				</div>
 				<div className="content content-first">
 					<button className="connect-btn zeropage-btn" onClick={NextPageLogin}>
 						Connect Dex Wallet

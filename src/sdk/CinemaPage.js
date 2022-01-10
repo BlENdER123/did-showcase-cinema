@@ -78,7 +78,7 @@ function CinemaPage() {
 					<div class="container container-test">
 						<h1>
 							<a class="navbar-brand" href="index.html">
-								RadianceTeam{" "}
+								Showcase Cinema{" "}
 							</a>
 						</h1>
 					</div>

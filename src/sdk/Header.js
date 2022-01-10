@@ -21,7 +21,7 @@ function Header() {
 							className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
 						>
 							<img src={logo} alt="logo" className="logo" />
-							<span className="fs-4">RADIANCETEAM</span>
+							<span className="fs-4">Showcase Cinema</span>
 						</a>
 
 						<Switch>

@@ -824,7 +824,7 @@ function WelcomeDidPage() {
 					return data.json();
 				})
 				.then((data) => {
-					testSign(data.token);
+					testSign(data.user.token);
 				});
 		}
 
@@ -841,10 +841,10 @@ function WelcomeDidPage() {
 					return data.json();
 				})
 				.then((data) => {
-					if (data.token == undefined) {
+					if (data.user.token == undefined) {
 						alert("Login Error!");
 					} else {
-						console.log(data.token);
+						console.log(data.user.token);
 						setRedirect(true);
 					}
 				});
