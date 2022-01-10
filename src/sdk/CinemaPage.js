@@ -50,7 +50,27 @@ import imageteam4 from "./images/team4.jpg";
 import imageteam5 from "./images/team5.jpg";
 import imageteam6 from "./images/team6.jpg";
 
+import Slider from "react-slick";
+
 function CinemaPage() {
+	let settings = {
+		arrows: false,
+		infinite: true,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		autoplay: true,
+		autoplaySpeed: 2000,
+	};
+
+	let settings2 = {
+		arrows: false,
+		infinite: true,
+		slidesToShow: 4,
+		slidesToScroll: 1,
+		autoplay: true,
+		autoplaySpeed: 2000,
+	};
+
 	return (
 		<>
 			<header id="site-header" class="w3l-header fixed-top">
@@ -58,7 +78,7 @@ function CinemaPage() {
 					<div class="container container-test">
 						<h1>
 							<a class="navbar-brand" href="index.html">
-								Radiance{" "}
+								RadianceTeam{" "}
 							</a>
 						</h1>
 					</div>
@@ -67,58 +87,218 @@ function CinemaPage() {
 
 			<div class="title">Movies for the evening</div>
 
+			<section class="w3l-grids">
+				<div class="grids-main py-5">
+					<div class="container py-lg-3">
+						<div class="headerhny-title">
+							<div class="w3l-title-grids">
+								<div class="headerhny-left">
+									<h3 class="hny-title">New Releases</h3>
+								</div>
+							</div>
+						</div>
+						<div class="owl-three owl-carousel owl-theme">
+							<Slider {...settings2}>
+								<div class="item vhny-grid">
+									<div class="box16 mb-0">
+										<a href="#">
+											<figure>
+												<img class="img-fluid" src={imagen3} alt="" />
+											</figure>
+											<div class="box-content">
+												<h4>
+													{" "}
+													<span class="post">
+														<span class="fa fa-clock-o"> </span> 2 Hr 4min
+													</span>
+													<span class="post fa fa-heart text-right"></span>
+												</h4>
+											</div>
+											<span
+												class="fa fa-play video-icon"
+												aria-hidden="true"
+											></span>
+										</a>
+									</div>
+									<h3>
+										{" "}
+										<a class="title-gd" href="#">
+											Free Guy
+										</a>
+									</h3>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+									<div class="button-center text-center mt-4">
+										<a href="#" class="btn watch-button">
+											Watch now
+										</a>
+									</div>
+								</div>
+								<div class="item vhny-grid">
+									<div class="box16 mb-0">
+										<a href="#">
+											<figure>
+												<img class="img-fluid" src={imagen4} alt="" />
+											</figure>
+											<div class="box-content">
+												<h4>
+													{" "}
+													<span class="post">
+														<span class="fa fa-clock-o"> </span> 2 Hr 4min
+													</span>
+													<span class="post fa fa-heart text-right"></span>
+												</h4>
+											</div>
+											<span
+												class="fa fa-play video-icon"
+												aria-hidden="true"
+											></span>
+										</a>
+									</div>
+									<h3>
+										{" "}
+										<a class="title-gd" href="#">
+											My Spy
+										</a>
+									</h3>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+									<div class="button-center text-center mt-4">
+										<a href="#" class="btn watch-button">
+											Watch now
+										</a>
+									</div>
+								</div>
+								<div class="item vhny-grid">
+									<div class="box16 mb-0">
+										<a href="#">
+											<figure>
+												<img class="img-fluid" src={imagen5} alt="" />
+											</figure>
+											<div class="box-content">
+												<h4>
+													{" "}
+													<span class="post">
+														<span class="fa fa-clock-o"> </span> 2 Hr 4min
+													</span>
+													<span class="post fa fa-heart text-right"></span>
+												</h4>
+											</div>
+											<span
+												class="fa fa-play video-icon"
+												aria-hidden="true"
+											></span>
+										</a>
+									</div>
+									<h3>
+										{" "}
+										<a class="title-gd" href="#">
+											Scoob
+										</a>
+									</h3>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+									<div class="button-center text-center mt-4">
+										<a href="#" class="btn watch-button">
+											Watch now
+										</a>
+									</div>
+								</div>
+								<div class="item vhny-grid">
+									<div class="box16 mb-0">
+										<a href="#">
+											<figure>
+												<img class="img-fluid" src={imagen6} alt="" />
+											</figure>
+											<div class="box-content">
+												<h4>
+													{" "}
+													<span class="post">
+														<span class="fa fa-clock-o"> </span> 2 Hr 4min
+													</span>
+													<span class="post fa fa-heart text-right"></span>
+												</h4>
+											</div>
+											<span
+												class="fa fa-play video-icon"
+												aria-hidden="true"
+											></span>
+										</a>
+									</div>
+									<h3>
+										{" "}
+										<a class="title-gd" href="#">
+											Downhill
+										</a>
+									</h3>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+									<div class="button-center text-center mt-4">
+										<a href="#" class="btn watch-button">
+											Watch now
+										</a>
+									</div>
+								</div>
+							</Slider>
+						</div>
+					</div>
+				</div>
+			</section>
+
 			<section class="w3l-mid-slider position-relative section-test">
 				<div class="companies20-content">
 					<div class="owl-mid owl-carousel owl-theme">
-						<div class="item">
-							<li>
-								<div class="slider-info mid-view bg bg2">
-									<div class="container">
-										<div class="mid-info">
-											<span class="sub-text">Comedy</span>
-											<h3>Jumanji: The Next Level</h3>
-											<p>2019 ‧ Comedy/Action ‧ 2h 3m</p>
-											<a class="watch" href="#">
-												<span class="fa fa-play" aria-hidden="true"></span>
-												Watch Trailer
-											</a>
+						<Slider {...settings}>
+							<div class="item">
+								<li>
+									<div class="slider-info mid-view bg bg2">
+										<div class="container">
+											<div class="mid-info">
+												<span class="sub-text">Comedy</span>
+												<h3>Jumanji: The Next Level</h3>
+												<p>2019 ‧ Comedy/Action ‧ 2h 3m</p>
+												<a class="watch">
+													<span class="fa fa-play" aria-hidden="true"></span>
+													Watch Trailer
+												</a>
+											</div>
 										</div>
 									</div>
-								</div>
-							</li>
-						</div>
-						{/* <div class="item">
-					<li>
-						<div class="slider-info mid-view mid-top1 bg bg2">
-							<div class="container">
-								<div class="mid-info">
-									<span class="sub-text">Adventure</span>
-									<h3>Dolittle</h3>
-									<p>2020 ‧ Family/Adventure ‧ 1h 41m</p>
-									<a class="watch" href="#"><span class="fa fa-play"
-											aria-hidden="true"></span>
-										Watch Trailer</a>
-								</div>
+								</li>
 							</div>
-						</div>
-					</li>
-				</div>
-				<div class="item">
-					<li>
-						<div class="slider-info mid-view mid-top2 bg bg2">
-							<div class="container">
-								<div class="mid-info">
-									<span class="sub-text">Action</span>
-									<h3>Bad Boys for Life</h3>
-									<p>2020 ‧ Comedy/Action ‧ 2h 4m</p>
-									<a class="watch" href="#"><span class="fa fa-play"
-											aria-hidden="true"></span>
-										Watch Trailer</a>
-								</div>
+
+							<div class="item">
+								<li>
+									<div class="slider-info mid-view mid-top1 bg bg2">
+										<div class="container">
+											<div class="mid-info">
+												<span class="sub-text">Adventure</span>
+												<h3>Dolittle</h3>
+												<p>2020 ‧ Family/Adventure ‧ 1h 41m</p>
+												<a class="watch">
+													<span class="fa fa-play" aria-hidden="true"></span>
+													Watch Trailer
+												</a>
+											</div>
+										</div>
+									</div>
+								</li>
 							</div>
-						</div>
-					</li>
-				</div> */}
+
+							<div class="item">
+								<li>
+									<div class="slider-info mid-view mid-top2 bg bg2">
+										<div class="container">
+											<div class="mid-info">
+												<span class="sub-text">Action</span>
+												<h3>Bad Boys for Life</h3>
+												<p>2020 ‧ Comedy/Action ‧ 2h 4m</p>
+												<a class="watch">
+													<span class="fa fa-play" aria-hidden="true"></span>
+													Watch Trailer
+												</a>
+											</div>
+										</div>
+									</div>
+								</li>
+							</div>
+						</Slider>
 					</div>
 				</div>
 			</section>

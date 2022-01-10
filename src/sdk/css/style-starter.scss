@@ -14242,7 +14242,7 @@ body a {
 
 .watch-button {
 	padding: 0px 40px;
-	color: var(--theme-blue);
+	color: #fff;
 	height: 44px;
 	display: block;
 	font-size: 16px;
@@ -14251,7 +14251,7 @@ body a {
 	transition: 0.3s ease-in;
 	border-radius: 6px;
 	background-color: transparent;
-	border: 2px solid var(--theme-blue);
+	border: 2px solid #fff;
 	width: 100%;
 }
 
@@ -14307,9 +14307,9 @@ h3.hny-title,
 h3.hny-title.two {
 	font-size: 26px;
 	line-height: 36px;
-	color: var(--theme-title);
+	color: #fff;
 	text-transform: uppercase;
-	font-weight: 700;
+	font-weight: 500;
 }
 
 a.show-title {
@@ -15864,12 +15864,13 @@ button.owl-next {
 	font-weight: 700;
 	text-transform: capitalize;
 	margin: 20px 0 7px 0;
-	color: var(--theme-title);
+	color: #fff;
 	display: inline-block;
 }
 
 .w3l-grids .vhny-grid {
 	margin-bottom: 24px;
+	padding: 15px;
 }
 
 .w3l-grids a.title-gd:hover {
