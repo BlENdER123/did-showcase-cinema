@@ -7,7 +7,7 @@ const {TonClient} = require("@tonclient/core");
 TonClient.useBinaryLibrary(libWeb);
 const client = new TonClient({network: {endpoints: ["main.ton.dev"]}});
 
-function WelcomeDidPageHeader() {
+function AppHeader() {
 	async function getClientBalance(clientAddress) {
 		console.log("clientAddress", clientAddress);
 		let address = clientAddress;
@@ -63,9 +63,17 @@ function WelcomeDidPageHeader() {
 
 	return (
 		<div className="acc-info">
-			<a href="#/connect-wallet">Log In</a>
+			<div className="acc">
+				<div className="acc-logo"></div>
+
+				<div className="content">
+					<div className="acc-status">Connected</div>
+					<div className="break"></div>
+					<div className="acc-wallet">{sessionStorage.did}</div>
+				</div>
+			</div>
 		</div>
 	);
 }
 
-export default WelcomeDidPageHeader;
+export default AppHeader;

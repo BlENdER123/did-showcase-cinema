@@ -845,6 +845,8 @@ function WelcomeDidPage() {
 						alert("Login Error!");
 					} else {
 						console.log(data.user.token);
+						sessionStorage.setItem("token", data.user.token);
+						sessionStorage.setItem("did", tempDid);
 						setRedirect(true);
 					}
 				});

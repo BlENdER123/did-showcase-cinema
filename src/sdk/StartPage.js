@@ -1,4 +1,6 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+
+import {HashRouter as Router, Link, Redirect} from "react-router-dom";
 
 import imagen1 from "./images/n1.jpg";
 import imagen2 from "./images/n2.jpg";
@@ -12,6 +14,16 @@ import lock from "./images/lock.png";
 import Slider from "react-slick";
 
 function StartPage() {
+	const [redirect, setRedirect] = useState(false);
+
+	useEffect(() => {
+		console.log(sessionStorage.token);
+		if (sessionStorage.token != undefined) {
+			console.log(1);
+			setRedirect(true);
+		}
+	});
+
 	let settings2 = {
 		arrows: false,
 		infinite: true,
@@ -23,7 +35,7 @@ function StartPage() {
 
 	return (
 		<>
-			<div class="darkBg"></div>
+			{/* <div class="darkBg"></div> */}
 
 			<div class="title">Movies for the evening</div>
 
@@ -190,12 +202,14 @@ function StartPage() {
 				</div>
 			</section>
 
-			<div class="modal-connect modal-connect-first page">
+			{redirect ? <Redirect to="/app" /> : null}
+
+			{/* <div class="modal-connect modal-connect-first page">
 				<div class="title">Welcome to the RADIANCE cinema</div>
 				<a href="#/connect-wallet">
 					<button>Log in with DID</button>
 				</a>
-			</div>
+			</div> */}
 		</>
 	);
 }

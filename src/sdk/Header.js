@@ -9,6 +9,7 @@ import {HashRouter as Router, Switch, Route} from "react-router-dom";
 import StartPageHeader from "./StartPageHeader";
 import WelcomeDidPageHeader from "./WelcomeDidPageHeader";
 import AppPageHeader from "./AppPageHeader";
+import AppHeader from "./AppHeader";
 
 function Header() {
 	return (
@@ -27,11 +28,13 @@ function Header() {
 						<Switch>
 							{/* <Route exact path="/" component={StartPageHeader}></Route> */}
 							{/* <Route exact path="/connect-wallet" component={StartPageHeader}></Route> */}
-							<Route
+							<Route exact path="/" component={WelcomeDidPageHeader}></Route>
+							<Route exact path="/app" component={AppHeader}></Route>
+							{/* <Route
 								exact
 								path="/welcome-did"
 								component={WelcomeDidPageHeader}
-							></Route>
+							></Route> */}
 							<Route
 								exact
 								path="/login-did"

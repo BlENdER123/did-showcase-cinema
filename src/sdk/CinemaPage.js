@@ -73,7 +73,7 @@ function CinemaPage() {
 
 	return (
 		<>
-			<header id="site-header" class="w3l-header fixed-top">
+			{/* <header id="site-header" class="w3l-header fixed-top">
 				<nav class="navbar navbar-expand-lg navbar-light fill px-lg-0 py-0 px-3">
 					<div class="container container-test">
 						<h1>
@@ -83,7 +83,7 @@ function CinemaPage() {
 						</h1>
 					</div>
 				</nav>
-			</header>
+			</header> */}
 
 			<div class="title">Movies for the evening</div>
 
