@@ -10,8 +10,8 @@ import {signerKeys, TonClient, signerNone} from "@tonclient/core";
 import {DEXClientContract} from "../extensions/contracts/testNet/DEXClientMainNet.js";
 // import {DidDocumentContract} from "./contracts/DidDocumentContract.js";
 
-import {DidStorageContract} from "./contracts/new/DidStorageContractNew.js";
-import {DidDocumentContract} from "./contracts/new/DidDocumentContractNew.js";
+import {DidStorageContract} from "./contracts/new/DidStorageContractDev.js";
+import {DidDocumentContract} from "./contracts/new/DidDocumentContractDev.js";
 
 import {useQuery} from "react-query";
 
@@ -21,7 +21,7 @@ import sha256 from "crypto-js/sha256";
 
 //const {TonClient} = require("@tonclient/core");
 TonClient.useBinaryLibrary(libWeb);
-const client = new TonClient({network: {endpoints: ["net.ton.dev"]}});
+const client = new TonClient({network: {endpoints: ["main.ton.dev"]}});
 
 const pidCrypt = require("pidcrypt");
 require("pidcrypt/aes_cbc");
@@ -33,10 +33,7 @@ require("pidcrypt/aes_cbc");
 // 	"0:c9e74798ee45b2e57661162dedeb81e8d015402f56c597747120e0de295f7441";
 
 let dexrootAddr =
-	"0:ee63d43c1f5ea924d3d47c5a264ad2661b5a4193963915d89f3116315350d7d3";
-
-let walletAddr =
-	"0:da136604399797f5d012ed406d541f4046d2aa5eca55290d500d2bcdfd9e2148";
+	"0:26e01cf61fd79264c21b1085f3d5de0481024ce54bfaf9de6507b4731bf8c94d";
 
 // const request = () =>
 // 	fetch("http://ssi.defispace.com:4001/graphql", {
