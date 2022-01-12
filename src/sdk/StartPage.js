@@ -31,6 +31,14 @@ function StartPage() {
 		slidesToScroll: 1,
 		autoplay: true,
 		autoplaySpeed: 2000,
+		responsive: [
+			{
+				breakpoint: 690,
+				settings: {
+					slidesToShow: 2,
+				},
+			},
+		],
 	};
 
 	return (

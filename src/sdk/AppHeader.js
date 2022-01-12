@@ -69,7 +69,7 @@ function AppHeader() {
 				<div className="content">
 					<div className="acc-status">Connected</div>
 					<div className="break"></div>
-					<div className="acc-wallet">{sessionStorage.did}</div>
+					<div className="acc-wallet">did:everscale:{sessionStorage.did}</div>
 				</div>
 			</div>
 		</div>

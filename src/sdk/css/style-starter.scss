@@ -2745,11 +2745,6 @@ textarea.form-control.is-invalid {
 	}
 }
 
-.btn:hover {
-	color: #212529;
-	text-decoration: none;
-}
-
 .btn:focus,
 .btn.focus {
 	outline: 0;
@@ -15035,6 +15030,7 @@ header.nav-fixed {
 .owl-carousel {
 	width: 100%;
 	z-index: 1;
+	overflow-y: hidden;
 }
 
 .container-test {
@@ -19237,10 +19233,6 @@ div#small-dialog4 iframe,
 	padding: 15px 0px;
 	right: 20px;
 	top: 1px;
-}
-
-.w3l-footer .subscribe button:hover {
-	color: var(--theme-rose);
 }
 
 .w3l-footer .columns p a {
