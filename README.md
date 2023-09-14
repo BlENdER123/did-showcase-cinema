@@ -1,3 +1,4 @@
+Video instruction : https://youtu.be/EkQcbf4sxE4
 # DEX frontend
 
 ## Available Scripts
